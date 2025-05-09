@@ -1,0 +1,17 @@
+﻿global using JobTracker.Application.Interfaces.Repositories;
+global using JobTracker.Application.Interfaces.Services;
+global using JobTracker.Infrastructure.Repositories;
+global using JobTracker.Application.Common.Mapping;
+global using JobTracker.Infrastructure.Context;
+global using JobTracker.Application.Services;
+global using JobTracker.Application.Records;
+global using Microsoft.EntityFrameworkCore;
+global using JobTracker.Domain.Entities;
+global using JobTracker.Api.Extensions;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.OpenApi.Models;
+global using JobTracker.Domain.Enums;
+global using JobTracker.Api.Mapping;
+global using JobTracker.Api.Records;
+global using Microsoft.OpenApi.Any;
+global using AutoMapper;
