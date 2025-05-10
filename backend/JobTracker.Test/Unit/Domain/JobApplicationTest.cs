@@ -1,6 +1,4 @@
-﻿using JobTracker.Domain.Entities;
-
-namespace JobTracker.Test.Unit.Domain;
+﻿namespace JobTracker.Test.Unit.Domain;
 public class JobApplicationTest
 {
     [Fact]

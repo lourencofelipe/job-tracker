@@ -15,8 +15,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -36,9 +35,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/openapi/v1.json", "JobTracker");
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "JobTracker API");
 });
-
 // app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
