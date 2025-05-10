@@ -40,10 +40,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { format } from 'date-fns'
+import { format } from 'date-fns';
 
 const JobTracker = () => {
   const [jobs, setJobs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 10;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentJob, setCurrentJob] = useState({
     companyName: "",
@@ -108,9 +111,10 @@ const JobTracker = () => {
         const newJob = await createJob(currentJob);
         setJobs((prevJobs) => [...prevJobs, newJob]);
       }
+      setCurrentPage(1);
       setIsModalOpen(false);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Failed to save the job. Please try again.";
+      const errorMessage = error.response?.data?.errors || error.message || "Failed to save the job. Please try again.";
       setError(errorMessage);
     }
   };
@@ -119,8 +123,9 @@ const JobTracker = () => {
     try {
       await deleteJob(id);
       setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
+      setCurrentPage(1);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Failed to delete the job. Please try again.";
+      const errorMessage = error.response?.data?.errors || error.message || "Failed to save the job. Please try again.";
       setError(errorMessage);
     }
   };
@@ -139,6 +144,12 @@ const JobTracker = () => {
   const handleCalendarToggle = () => {
     setIsCalendarOpen((prev) => !prev);
   };
+
+  // Paginação
+  const lastJobIndex = currentPage * jobsPerPage;
+  const firstJobIndex = lastJobIndex - jobsPerPage;
+  const currentJobs = jobs.slice(firstJobIndex, lastJobIndex);
+  const totalPages = Math.ceil(jobs.length / jobsPerPage);
 
   return (
     <div className="p-6 space-y-6 flex flex-col items-center min-h-screen bg-gray-950 text-white font-sans">
@@ -165,7 +176,7 @@ const JobTracker = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {jobs.map((job) => (
+            {currentJobs.map((job) => (
               <TableRow
                 key={job.id}
                 className="hover:bg-gray-700 transition-colors"
@@ -200,8 +211,30 @@ const JobTracker = () => {
             ))}
           </TableBody>
         </Table>
+
+        {/* Pagination */}
+        <div className="flex justify-center mt-4 space-x-2">
+          <Button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            Previous
+          </Button>
+          <span className="text-white px-4 py-2">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="bg-blue-500 hover:bg-blue-600 text-white"
+          >
+            Next
+          </Button>
+        </div>
       </div>
 
+      
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="bg-gray-800 text-white rounded-lg shadow-lg p-6">
           <DialogHeader>
@@ -237,9 +270,7 @@ const JobTracker = () => {
                 placeholder="Select Date"
                 value={
                   currentJob.dateApplied
-                    ? new Date(currentJob.dateApplied).toLocaleDateString(
-                        "en-GB"
-                      )
+                    ? new Date(currentJob.dateApplied).toLocaleDateString("en-GB")
                     : ""
                 }
                 onClick={handleCalendarToggle}
