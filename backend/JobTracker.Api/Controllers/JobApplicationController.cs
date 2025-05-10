@@ -20,7 +20,7 @@ public class JobApplicationController : ControllerBase
         var result = await _service.GetAll();
 
         if (!result.Success)
-            return NotFound(new { errors = result.Error });
+            return Ok(Enumerable.Empty<JobApplicationRecord>());
 
         return Ok(result.Value);
     }
