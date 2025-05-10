@@ -1,6 +1,4 @@
-﻿using JobTracker.Application.Common;
-
-namespace JobTracker.Infrastructure.Repositories;
+﻿namespace JobTracker.Infrastructure.Repositories;
 public class JobApplicationRepository : IJobApplicationRepository
 {
     private readonly EfContext _context;

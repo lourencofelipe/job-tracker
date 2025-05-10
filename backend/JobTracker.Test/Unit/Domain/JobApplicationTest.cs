@@ -38,7 +38,7 @@ public class JobApplicationTest
 
         // Assert
         result.Should().BeFalse();
-        error.Should().Be("Cannot change status to Applied.");
+        error.Should().Be("Cannot change status from Applied to Offer.");
     }
 
     [Fact]

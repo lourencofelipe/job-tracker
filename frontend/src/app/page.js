@@ -145,7 +145,7 @@ const JobTracker = () => {
     setIsCalendarOpen((prev) => !prev);
   };
 
-  // Paginação
+  // Pagination
   const lastJobIndex = currentPage * jobsPerPage;
   const firstJobIndex = lastJobIndex - jobsPerPage;
   const currentJobs = jobs.slice(firstJobIndex, lastJobIndex);
