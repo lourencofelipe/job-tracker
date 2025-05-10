@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobTracker.Domain", "JobTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobTracker.Api", "JobTracker.Api\JobTracker.Api.csproj", "{EB1672C5-E0FE-F801-4C43-7CC044EA167B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobTracker.Test", "JobTracker.Test\JobTracker.Test.csproj", "{1AE2502A-95B7-4D8E-B59B-6319256F8432}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{EB1672C5-E0FE-F801-4C43-7CC044EA167B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB1672C5-E0FE-F801-4C43-7CC044EA167B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB1672C5-E0FE-F801-4C43-7CC044EA167B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AE2502A-95B7-4D8E-B59B-6319256F8432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE2502A-95B7-4D8E-B59B-6319256F8432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE2502A-95B7-4D8E-B59B-6319256F8432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE2502A-95B7-4D8E-B59B-6319256F8432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
