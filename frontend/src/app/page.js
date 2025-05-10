@@ -31,6 +31,15 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { format } from 'date-fns'
 
 const JobTracker = () => {
@@ -44,10 +53,21 @@ const JobTracker = () => {
   });
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getJobs().then(setJobs);
+    fetchJobs();
   }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const data = await getJobs();
+      setJobs(data);
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "Failed to fetch jobs. Please try again later.";
+      setError(errorMessage);
+    }
+  };
 
   useEffect(() => {
     const { companyName, position, status, dateApplied } = currentJob;
@@ -90,7 +110,8 @@ const JobTracker = () => {
       }
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Error to save the job:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to save the job. Please try again.";
+      setError(errorMessage);
     }
   };
 
@@ -99,7 +120,8 @@ const JobTracker = () => {
       await deleteJob(id);
       setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
     } catch (error) {
-      console.error("Error to delete a job:", error);
+      const errorMessage = error.response?.data?.message || error.message || "Failed to delete the job. Please try again.";
+      setError(errorMessage);
     }
   };
 
@@ -274,6 +296,25 @@ const JobTracker = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={!!error} onOpenChange={() => setError(null)}>
+        <AlertDialogContent className="bg-gray-800 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Error</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              {error}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction
+              onClick={() => setError(null)}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+            >
+              OK
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
