@@ -21,7 +21,7 @@ public class JobApplication
 
         if (Status.Equals(ApplicationStatus.Applied) && newStatus.Equals(ApplicationStatus.Offer))
         {
-            error = "Cannot change status to Applied.";
+            error = "Cannot change status from Applied to Offer.";
             return false;
         }
 

@@ -5,11 +5,13 @@ var builder = WebApplication.CreateBuilder(args);
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
+var clientOrigin = builder.Configuration["ClientOrigin"];
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowFront", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(clientOrigin) 
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -37,9 +39,8 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "JobTracker API");
 });
-// app.UseHttpsRedirection();
 
-app.UseCors("AllowAll");
+app.UseCors("AllowFront");
 
 app.UseAuthorization();
 
