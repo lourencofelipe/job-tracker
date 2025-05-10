@@ -5,7 +5,9 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # Copy only the necessary files
-COPY . .
+COPY ./JobTracker.Api ./JobTracker.Api
+COPY ./JobTracker.Application ./JobTracker.Application
+COPY ./JobTracker.Infrastructure ./JobTracker.Infrastructure
 
 # Restore dependencies
 RUN dotnet restore "JobTracker.Api.csproj"
