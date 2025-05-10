@@ -1,21 +1,26 @@
-# Build
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build 
-WORKDIR /src
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
-# Copy
+# Set the working directory
+WORKDIR /app
+
+# Copy only the necessary files
 COPY . .
 
-WORKDIR JobTracker.Api
+# Restore dependencies
+RUN dotnet restore "JobTracker.Api.csproj"
 
-# Restore Dependencies
-RUN dotnet restore JobTracker.Api.csproj
+# Compile and publish the application
+RUN dotnet publish "JobTracker.Api.csproj" -c Release -o /out
 
-# Compiles and publish
-RUN dotnet publish JobTracker.Api.csproj -c Release -o /out
-
-# Runtime
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+
+# Set the working directory
 WORKDIR /app
+
+# Copy the published output from the build stage
 COPY --from=build /out .
 
+# Set the entry point for the container
 ENTRYPOINT ["dotnet", "JobTracker.Api.dll"]
