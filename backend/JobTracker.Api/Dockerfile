@@ -5,7 +5,7 @@ WORKDIR /src
 # Copy
 COPY . .
 
-WORKDIR /backend/JobTracker.Api
+WORKDIR JobTracker.Api
 
 # Restore Dependencies
 RUN dotnet restore JobTracker.Api.csproj
