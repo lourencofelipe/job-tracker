@@ -1,9 +1,9 @@
 # JobTracker
 
-JobTracker is an application for tracking job applications.  
+JobTracker is an application for managing job applications.  
 Built with **.NET 9 (API)** and **React / Next.js (Frontend)**.
 
-## 📦 Project Structure
+## Project Structure
 
 - `JobTracker.Api` - ASP.NET Core Web API
 - `JobTracker.Application` - Application layer with business logic
@@ -12,12 +12,28 @@ Built with **.NET 9 (API)** and **React / Next.js (Frontend)**.
 - `JobTracker.Test` - xUnit test project
 - `frontend` - React / Next.js frontend
 
-## 🚀 Live Demo
+## Features
 
-- **Backend Swagger UI**: [https://job-tracker-ro0e.onrender.com/swagger/index.html](https://job-tracker-ro0e.onrender.com/swagger/index.html)
-- **Frontend**: [https://job-tracker-hazel-seven.vercel.app](https://job-tracker-hazel-seven.vercel.app)
+-  Create, Update, and Delete job applications
+-  Track application status: `Applied`, `Interview`, `Offer` and, `Rejected`
+-  Doucmented API with Swagger
+-  Deployment-ready configuration
 
-## 🧪 Technologies Used
+## Deployments
+
+The application is deployed and accessible via the following links:
+
+### Backend (.NET 9 - Hosted on Render)
+
+ - Swagger (local): http://localhost:5000/swagger
+
+ - Swagger (deployed): https://job-tracker-ro0e.onrender.com/swagger/index.html
+
+### Frontend (React + Next.js - Hosted on Vercel)
+
+ - Live Site: https://job-tracker-hazel-seven.vercel.app/
+
+## Technologies Used
 
 ### Backend:
 - .NET 9
@@ -31,7 +47,7 @@ Built with **.NET 9 (API)** and **React / Next.js (Frontend)**.
 - Next.js
 - Axios
 
-## 📂 How to run locally
+## How to run locally
 
 ### Backend:
 ```bash
