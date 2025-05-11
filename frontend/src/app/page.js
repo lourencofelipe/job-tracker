@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { getJobs, createJob, updateJob, deleteJob } from "@/api/jobApi";
+import { formatDate, handleApiError, getInitialJobData } from "@/lib/utils";
 import {
   Button,
   Input,
@@ -28,7 +29,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui";
-import { formatDate, handleApiError, getInitialJobData } from "@/lib/utils";
 
 const JobTracker = () => {
   const [jobs, setJobs] = useState([]);
@@ -120,10 +120,15 @@ const JobTracker = () => {
   };
 
   // Pagination
-  const lastJobIndex = currentPage * jobsPerPage;
-  const firstJobIndex = lastJobIndex - jobsPerPage;
+  const totalJobs = jobs.length;
+  // If 0 jobs, shows 1 empty page.
+  const totalPages = totalJobs === 0 ? 1 : Math.ceil(totalJobs / jobsPerPage);
+  // Gets the index of the first application that needs to be shown in the current page.
+  const firstJobIndex = (currentPage - 1) * jobsPerPage;
+  // The last application in the current page it is the previous to the next page start.
+  const lastJobIndex = firstJobIndex + jobsPerPage;
+  // Slice the list of jobs just with the applications that needs to be shown in the page.
   const currentJobs = jobs.slice(firstJobIndex, lastJobIndex);
-  const totalPages = Math.ceil(jobs.length / jobsPerPage);
 
   return (
     <div className="p-6 space-y-6 flex flex-col items-center min-h-screen bg-gray-950 text-white font-sans">
@@ -184,7 +189,7 @@ const JobTracker = () => {
 
         <div className="flex justify-center mt-4 space-x-2">
           <Button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+             onClick={() => setCurrentPage(currentPage - 1)}
             disabled={currentPage === 1}
             className="bg-blue-500 hover:bg-blue-600 text-white"
           >
@@ -194,7 +199,7 @@ const JobTracker = () => {
             Page {currentPage} of {totalPages}
           </span>
           <Button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() => setCurrentPage(currentPage + 1)}
             disabled={currentPage === totalPages}
             className="bg-blue-500 hover:bg-blue-600 text-white"
           >

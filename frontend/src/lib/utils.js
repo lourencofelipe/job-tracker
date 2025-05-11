@@ -8,15 +8,15 @@ export function cn(...inputs) {
 
 export const formatDate = (date, style = "iso") => {
   if (!date) return "";
-  const d = new Date(date);
+  const newDate = new Date(date);
 
   switch (style) {
     case "iso":
-      return format(d, "yyyy-MM-dd");
+      return format(newDate, "yyyy-MM-dd");
     case "display":
-      return d.toLocaleDateString("en-GB");
+      return newDate.toLocaleDateString("en-GB");
     default:
-      return d.toISOString();
+      return newDate.toISOString();
   }
 };
 
