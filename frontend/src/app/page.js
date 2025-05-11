@@ -1,37 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { getJobs, createJob, updateJob, deleteJob } from "@/api/jobApi";
 import {
-  getJobs,
-  createJob,
-  updateJob,
-  deleteJob,
-} from "@/api/jobApi";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
+  Button,
+  Input,
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select";
-import {
   Table,
   TableHeader,
   TableRow,
   TableCell,
   TableBody,
-} from "@/components/ui/table";
-import { Calendar } from "@/components/ui/calendar";
-import {
+  Calendar,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogContent,
@@ -39,8 +27,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { format } from 'date-fns';
+} from "@/components/ui";
+import { formatDate, handleApiError, getInitialJobData } from "@/lib/utils";
 
 const JobTracker = () => {
   const [jobs, setJobs] = useState([]);
@@ -48,12 +36,7 @@ const JobTracker = () => {
   const jobsPerPage = 10;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentJob, setCurrentJob] = useState({
-    companyName: "",
-    position: "",
-    status: "",
-    dateApplied: "",
-  });
+  const [currentJob, setCurrentJob] = useState(getInitialJobData());
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -67,8 +50,7 @@ const JobTracker = () => {
       const data = await getJobs();
       setJobs(data);
     } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message || "Failed to fetch jobs. Please try again later.";
-      setError(errorMessage);
+      setError(handleApiError(error, "Failed to fetch jobs."));
     }
   };
 
@@ -78,12 +60,7 @@ const JobTracker = () => {
   }, [currentJob]);
 
   const handleAddJob = () => {
-    setCurrentJob({
-      companyName: "",
-      position: "",
-      status: "",
-      dateApplied: "",
-    });
+    setCurrentJob(getInitialJobData());
     setIsModalOpen(true);
   };
 
@@ -114,8 +91,7 @@ const JobTracker = () => {
       setCurrentPage(1);
       setIsModalOpen(false);
     } catch (error) {
-      const errorMessage = error.response?.data?.errors || error.message || "Failed to save the job. Please try again.";
-      setError(errorMessage);
+      setError(handleApiError(error, "Failed to save the job."));
     }
   };
 
@@ -125,17 +101,15 @@ const JobTracker = () => {
       setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
       setCurrentPage(1);
     } catch (error) {
-      const errorMessage = error.response?.data?.errors || error.message || "Failed to save the job. Please try again.";
-      setError(errorMessage);
+      setError(handleApiError(error, "Failed to delete the job."));
     }
   };
 
   const handleDateChange = (date) => {
     if (date) {
-      const formattedDate = format(date, "yyyy-MM-dd");
       setCurrentJob({
         ...currentJob,
-        dateApplied: formattedDate,
+        dateApplied: formatDate(date, "iso"),
       });
       setIsCalendarOpen(false);
     }
@@ -184,11 +158,7 @@ const JobTracker = () => {
                 <TableCell>{job.companyName}</TableCell>
                 <TableCell>{job.position}</TableCell>
                 <TableCell>{job.status}</TableCell>
-                <TableCell>
-                  {job.dateApplied
-                    ? new Date(job.dateApplied).toLocaleDateString("en-GB")
-                    : ""}
-                </TableCell>
+                <TableCell>{formatDate(job.dateApplied, "display")}</TableCell>
                 <TableCell>
                   <Button
                     variant="secondary"
@@ -212,7 +182,6 @@ const JobTracker = () => {
           </TableBody>
         </Table>
 
-        {/* Pagination */}
         <div className="flex justify-center mt-4 space-x-2">
           <Button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
@@ -234,7 +203,6 @@ const JobTracker = () => {
         </div>
       </div>
 
-      
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="bg-gray-800 text-white rounded-lg shadow-lg p-6">
           <DialogHeader>
@@ -268,11 +236,7 @@ const JobTracker = () => {
               <Input
                 name="dateApplied"
                 placeholder="Select Date"
-                value={
-                  currentJob.dateApplied
-                    ? new Date(currentJob.dateApplied).toLocaleDateString("en-GB")
-                    : ""
-                }
+                value={formatDate(currentJob.dateApplied, "display")}
                 onClick={handleCalendarToggle}
                 readOnly
                 className="bg-gray-700 text-white border border-gray-600 rounded"
@@ -318,10 +282,7 @@ const JobTracker = () => {
             >
               Submit
             </Button>
-            <Button
-              variant="outline"
-              onClick={() => setIsModalOpen(false)}
-            >
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
           </DialogFooter>
