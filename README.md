@@ -6,7 +6,7 @@ Built with **.NET 9 (API)** and **React / Next.js (Frontend)**.
 ## Project Structure
 
 - `JobTracker.Api` - ASP.NET Core Web API
-- `JobTracker.Application` - Application layer with business logic
+- `JobTracker.Application` - Application layer 
 - `JobTracker.Domain` - Core entities and enums
 - `JobTracker.Infrastructure` - EF Core In-Memory DB & repositories
 - `JobTracker.Test` - xUnit test project
