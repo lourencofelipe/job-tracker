@@ -27,10 +27,7 @@ builder.Services.AddControllers()
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddOpenApi();
-builder.Services.AddAutoMapper(
-    typeof(ApplicationAutoMapperConfig).Assembly,
-    typeof(ApiMappingConfig).Assembly
-);
+builder.Services.AddAutoMapper(typeof(ApplicationAutoMapperConfig).Assembly);
 
 var app = builder.Build();
 

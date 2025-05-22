@@ -3,8 +3,5 @@ global using JobTracker.Application.Interfaces.Services;
 global using JobTracker.Application.Records;
 global using JobTracker.Application.Common;
 global using JobTracker.Domain.Entities;
-global using System.Collections.Generic;
 global using JobTracker.Domain.Enums;
-global using System.Threading.Tasks;
-global using System.Linq;
 global using AutoMapper;
